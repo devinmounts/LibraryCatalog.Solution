@@ -9,57 +9,56 @@ namespace LibraryCatalog.Controllers
 {
     public class BookController : Controller
     {
-        [HttpGet("/add/author")]
+        [HttpGet("/add/book")]
         public ActionResult Create()
         {
             return View();
         }
 
-        [HttpPost("/add/author")]
-        public ActionResult CreatePost()
+        [HttpPost("/add/book")]
+        public ActionResult CreatePost(string name)
         {
-            string name = Request.Form["name"];
-            Author newAuthor = new Author(name);
-            newAuthor.Save();
+            Book newBook = new Book(name);
+            newBook.Save();
 
-            return RedirectToAction("Authors");
+            return RedirectToAction("Books");
         }
 
-        [HttpGet("/view/authors")]
-        public ActionResult Authors()
+        [HttpGet("/view/books")]
+        public ActionResult Books()
         {
-            return View(Author.GetAll());
+            return View(Book.GetAll());
         }
 
-        [HttpGet("/view/authors/{id}")]
+        [HttpGet("/view/book/{id}")]
         public ActionResult Details(int id)
         {
-            Author existingAuthor = Author.Find(id);
-            return View(existingAuthor);
+            Book existingBook = Book.Find(id);
+            return View(existingBook);
         }
 
-        [HttpGet("/view/authors/{id}/update")]
+        [HttpGet("/view/book/{id}/update")]
         public ActionResult UpdateForm(int id)
         {
-            Author existingAuthor = Author.Find(id);
-            return View(existingAuthor);
+            Book existingBook = Book.Find(id);
+            return View(existingBook);
         }
 
-        [HttpPost("/view/authors/{id}/update")]
+        [HttpPost("/view/book/{id}/update")]
         public ActionResult Update(int id, string name)
         {
-            Author existingAuthor = Author.Find(id);
-            existingAuthor.Edit(name);
+            Book existingBook = Book.Find(id);
+            existingBook.Edit(name);
 
             return RedirectToAction("Details", id);
         }
 
-        [HttpPost("/view/authors/{id}/delete")]
+        [HttpPost("/view/book/{id}/delete")]
         public ActionResult Delete(int id)
         {
-            Author existingAuthor = Author.Find(id);
-            existingAuthor.Delete();
-            return RedirectToAction("Authors");
+            Book existingBook = Book.Find(id);
+            existingBook.Delete();
+            return RedirectToAction("Books");
         }
     }
 }

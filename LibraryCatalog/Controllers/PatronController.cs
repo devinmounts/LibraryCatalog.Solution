@@ -7,30 +7,58 @@ using LibraryCatalog.Models;
 
 namespace LibraryCatalog.Controllers
 {
-    public class CopyController : Controller
+    public class PatronController : Controller
     {
-        public ActionResult Index()
+        [HttpGet("/add/patron")]
+        public ActionResult Create()
         {
             return View();
         }
 
-        public ActionResult About()
+        [HttpPost("/add/patron")]
+        public ActionResult CreatePost(string name)
         {
-            ViewData["Message"] = "Your application description page.";
+            Patron newPatron = new Patron(name);
+            newPatron.Save();
 
-            return View();
+            return RedirectToAction("Patrons");
         }
 
-        public ActionResult Contact()
+        [HttpGet("/view/books")]
+        public ActionResult Patrons()
         {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
+            return View(Patron.GetAll());
         }
 
-        public ActionResult Error()
+        [HttpGet("/view/book/{id}")]
+        public ActionResult Details(int id)
         {
-            return View();
+            Patron existingPatron = Patron.Find(id);
+            return View(existingPatron);
+        }
+
+        [HttpGet("/view/book/{id}/update")]
+        public ActionResult UpdateForm(int id)
+        {
+            Patron existingPatron = Patron.Find(id);
+            return View(existingPatron);
+        }
+
+        [HttpPost("/view/book/{id}/update")]
+        public ActionResult Update(int id, string name)
+        {
+            Patron existingPatron = Patron.Find(id);
+            existingPatron.Edit(name);
+
+            return RedirectToAction("Details", id);
+        }
+
+        [HttpPost("/view/book/{id}/delete")]
+        public ActionResult Delete(int id)
+        {
+            Patron existingPatron = Patron.Find(id);
+            existingPatron.Delete();
+            return RedirectToAction("Patrons");
         }
     }
 }

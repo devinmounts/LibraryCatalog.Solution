@@ -16,9 +16,8 @@ namespace LibraryCatalog.Controllers
         }
 
         [HttpPost("/add/author")]
-        public ActionResult CreatePost()
+        public ActionResult CreatePost(string name)
         {
-            string name = Request.Form["name"];
             Author newAuthor = new Author(name);
             newAuthor.Save();
 
