@@ -16,5 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="Views\Author\" />
+    <Folder Include="Views\Book\" />
+    <Folder Include="Views\Copy\" />
+    <Folder Include="Views\Patron\" />
   </ItemGroup>
 </Project>
