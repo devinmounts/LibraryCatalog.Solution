@@ -162,7 +162,7 @@ namespace LibraryCatalog.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"DELETE FROM patrons WHERE id = @PatronId; DELETE FROM checkout WHERE patron_id = @PatronId;";
+            cmd.CommandText = @"DELETE FROM patrons WHERE id = @PatronId; DELETE FROM checkouts WHERE patron_id = @PatronId;";
 
             MySqlParameter patronIdParameter = new MySqlParameter();
             patronIdParameter.ParameterName = "@PatronId";
@@ -198,7 +198,7 @@ namespace LibraryCatalog.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"INSERT INTO checkout (copy_id, patron_id) VALUES (@CopyId, @PatronId);";
+            cmd.CommandText = @"INSERT INTO checkouts (copy_id, patron_id) VALUES (@CopyId, @PatronId);";
 
             MySqlParameter copy_id = new MySqlParameter();
             copy_id.ParameterName = "@CopyId";
@@ -218,14 +218,14 @@ namespace LibraryCatalog.Models
             }
         }
 
-        public List<Copy> GetCopys()
+        public List<Copy> GetCopies()
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"SELECT copies.* FROM patrons
-                                JOIN checkout ON (patrons.id = checkout.patron_id)
-                                JOIN copies ON (checkout.copy_id = copies.id)
+                                JOIN checkouts ON (patrons.id = checkouts.patron_id)
+                                JOIN copies ON (checkouts.copy_id = copies.id)
                                 WHERE patrons.id = @patronId;";
 
             MySqlParameter patronIdParameter = new MySqlParameter();

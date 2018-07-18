@@ -19,14 +19,7 @@ namespace LibraryCatalog.Controllers
         [HttpPost("/add/copy")]
         public ActionResult CheckoutCopy(int bookId, int patronId, string dueDate)
         {
-            DateTime newDate = Convert.ToDateTime(dueDate);
-            Copy newCopy = new Copy(newDate);
-
-            Patron existingPatron = Patron.Find(patronId);
-            Book existingBook = Book.Find(bookId);
-            existingBook.AddCopy(newCopy);
-
-            return RedirectToAction("Details", patronId);
+            return new EmptyResult();
         }
 
         [HttpGet("/view/copies")]
@@ -49,14 +42,5 @@ namespace LibraryCatalog.Controllers
             existingCopy.Delete();
             return RedirectToAction("Copies");
         }
-
-        [HttpGet("/view/copy/{id}/checkout")]
-        public ActionResult Checkout(int id, string dueDate)
-        {
-            Patron existingPatron = Patron.Find(id);
-            Copy newCopy = 
-            return View(existingCopy);
-        }
-
     }
 }

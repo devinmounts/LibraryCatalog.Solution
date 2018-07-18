@@ -46,7 +46,7 @@ namespace LibraryCatalog.Models
             conn.Open();
 
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"INSERT INTO copies (dueDate) VALUES (@dueDate);";
+            cmd.CommandText = @"INSERT INTO copies (due_date) VALUES (@dueDate);";
 
             MySqlParameter dueDate = new MySqlParameter();
             dueDate.ParameterName = "@dueDate";
@@ -133,7 +133,7 @@ namespace LibraryCatalog.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"DELETE FROM copies WHERE id = @CopyId; DELETE FROM checkout WHERE copies_id = @CopyId;";
+            cmd.CommandText = @"DELETE FROM copies WHERE id = @CopyId; DELETE FROM checkouts WHERE copies_id = @CopyId;";
 
             MySqlParameter copyIdParameter = new MySqlParameter();
             copyIdParameter.ParameterName = "@CopyId";
@@ -169,7 +169,7 @@ namespace LibraryCatalog.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"INSERT INTO checkout (copy_id, patron_id) VALUES (@CopyId, @PatronId);";
+            cmd.CommandText = @"INSERT INTO checkouts (copy_id, patron_id) VALUES (@CopyId, @PatronId);";
 
             MySqlParameter copy_id = new MySqlParameter();
             copy_id.ParameterName = "@CopyId";
@@ -195,8 +195,8 @@ namespace LibraryCatalog.Models
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"SELECT patrons.* FROM copies
-                                JOIN checkout ON (copies.id = checkout.copy_id)
-                                JOIN patrons ON (checkout.patron_id = patrons.id)
+                                JOIN checkouts ON (copies.id = checkouts.copy_id)
+                                JOIN patrons ON (checkouts.patron_id = patrons.id)
                                 WHERE copies.id = @copyId;";
 
             MySqlParameter copyIdParameter = new MySqlParameter();
@@ -232,8 +232,8 @@ namespace LibraryCatalog.Models
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"SELECT books.* FROM copies
-                                JOIN copies_books ON (books.id = copies_books.book_id)
-                                JOIN books ON (copies_books.copy_id = copies.id)
+                                JOIN copies_books ON (copies.id = copies_books.copy_id)
+                                JOIN books ON (copies_books.book_id = books.id)
                                 WHERE copies.id = @copyId;";
 
             MySqlParameter copyIdParameter = new MySqlParameter();

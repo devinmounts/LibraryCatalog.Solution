@@ -63,16 +63,19 @@ namespace LibraryCatalog.Controllers
         }
 
         [HttpGet("/view/patrons/{id}/checkout")]
-        public ActionResult CheckoutForm()
+        public ActionResult CheckoutForm(int id)
         {
-            return View();
+            Patron existingPatron = Patron.Find(id);
+            CheckoutViewModel viewModel = new CheckoutViewModel(existingPatron);
+            return View(viewModel);
         }
 
         [HttpPost("/view/patrons/{id}/checkout")]
-        public ActionResult CheckoutCopy(int bookId, int id, string dueDate)
+        public ActionResult CheckoutCopy(int bookId, int id, string date)
         {
-            DateTime newDate = Convert.ToDateTime(dueDate);
+            DateTime newDate = Convert.ToDateTime(date);
             Copy newCopy = new Copy(newDate);
+            newCopy.Save();
 
             Patron existingPatron = Patron.Find(id);
             existingPatron.AddCopy(newCopy);

@@ -6,12 +6,12 @@
     <div class="col-sm-12">
         <h3>@Model.Name:</h3>
         <hr /><br />
-        <h4>@Model.Name</h4>
         <h5><strong>Books</strong></h5>
         @foreach(var copy in Model.GetCopies())
         {
-            <p><a href="~/view/books/@copy.GetBook().Id">@copy.GetBook().Name</a></p>
+            <p><a href="~/view/books/@copy.GetBook().Id">@copy.GetBook().Title</a></p>
         }
+        <a href="/view/patrons/@Model.Id/checkout" class="btn btn-primary">Checkout</a>
         <a href="/view/patrons/@Model.Id/update" class="btn btn-primary">Edit</a>
         <form method="post" class="inline-form-button" action="/view/patrons/@Model.Id/delete"><button type="submit" class="btn btn-danger">Delete</button></form>
         <hr />

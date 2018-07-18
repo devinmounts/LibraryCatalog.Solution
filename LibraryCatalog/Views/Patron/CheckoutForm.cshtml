@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <form action="/view/patrons/@Model.PatronModel.Id/checkout" method="post">
+            <div class="form-group">
+                <h3> Welcome to Checkout @Model.PatronModel.Name</h3>
+                <label for="author">Select a Book:</label>
+                <select name="bookId" required>
+                    @foreach(var book in Model.GetAll())
+                    {
+                        <option value="@book.Id">@book.Title</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date">Select Due Date</label>
+                <input type="date" id="date" name="date" required />
+            </div>
+            <button class="btn btn-primary" type="submit">Add</button>
+            <a href="/" class="btn btn-primary">Return to Home</a>
+        </form>
+    </div>
+</div>
