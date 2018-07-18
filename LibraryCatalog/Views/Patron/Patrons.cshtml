@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>Existing Patron's</h3>
+        @{
+            foreach (var patron in Model)
+            {
+                <h4><a href="/view/patrons/@patron.Id">@patron.Name</a></h4>
+                <a href="/view/patrons/@patron.Id/update" class="btn btn-primary">Edit</a>
+                <form class="inline-form-button" method="post" action="/view/patrons/@patron.Id/delete"><button type="submit" class="btn btn-danger">Delete</button></form>
+                <hr />
+            }
+        }
+    </div>
+</div>

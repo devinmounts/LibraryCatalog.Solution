@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LibraryCatalog.Models;
+using LibraryCatalog.ViewModels;
 
 namespace LibraryCatalog.Controllers
 {
@@ -24,27 +25,27 @@ namespace LibraryCatalog.Controllers
             return RedirectToAction("Patrons");
         }
 
-        [HttpGet("/view/books")]
+        [HttpGet("/view/patrons")]
         public ActionResult Patrons()
         {
             return View(Patron.GetAll());
         }
 
-        [HttpGet("/view/book/{id}")]
+        [HttpGet("/view/patrons/{id}")]
         public ActionResult Details(int id)
         {
             Patron existingPatron = Patron.Find(id);
             return View(existingPatron);
         }
 
-        [HttpGet("/view/book/{id}/update")]
+        [HttpGet("/view/patrons/{id}/update")]
         public ActionResult UpdateForm(int id)
         {
             Patron existingPatron = Patron.Find(id);
             return View(existingPatron);
         }
 
-        [HttpPost("/view/book/{id}/update")]
+        [HttpPost("/view/patrons/{id}/update")]
         public ActionResult Update(int id, string name)
         {
             Patron existingPatron = Patron.Find(id);
@@ -53,12 +54,32 @@ namespace LibraryCatalog.Controllers
             return RedirectToAction("Details", id);
         }
 
-        [HttpPost("/view/book/{id}/delete")]
+        [HttpPost("/view/patrons/{id}/delete")]
         public ActionResult Delete(int id)
         {
             Patron existingPatron = Patron.Find(id);
             existingPatron.Delete();
             return RedirectToAction("Patrons");
+        }
+
+        [HttpGet("/view/patrons/{id}/checkout")]
+        public ActionResult CheckoutForm()
+        {
+            return View();
+        }
+
+        [HttpPost("/view/patrons/{id}/checkout")]
+        public ActionResult CheckoutCopy(int bookId, int id, string dueDate)
+        {
+            DateTime newDate = Convert.ToDateTime(dueDate);
+            Copy newCopy = new Copy(newDate);
+
+            Patron existingPatron = Patron.Find(id);
+            existingPatron.AddCopy(newCopy);
+            Book existingBook = Book.Find(bookId);
+            existingBook.AddCopy(newCopy);
+
+            return RedirectToAction("Details", id);
         }
     }
 }

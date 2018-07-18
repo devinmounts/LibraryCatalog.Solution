@@ -258,7 +258,6 @@ namespace LibraryCatalog.Models
         {
             return Copy.GetAll();
         }
-
     }
 }
-}
+

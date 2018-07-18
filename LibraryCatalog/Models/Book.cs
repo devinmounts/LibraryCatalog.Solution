@@ -233,6 +233,31 @@ namespace LibraryCatalog.Models
             }
         }
 
+        public void AddCopy(Copy newCopy)
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"INSERT INTO copies_books (copy_id, book_id) VALUES (@CopyId, @BookId);";
+
+            MySqlParameter copy_id = new MySqlParameter();
+            copy_id.ParameterName = "@CopyId";
+            copy_id.Value = newCopy.Id;
+            cmd.Parameters.Add(copy_id);
+
+            MySqlParameter book_id = new MySqlParameter();
+            book_id.ParameterName = "@BookId";
+            book_id.Value = Id;
+            cmd.Parameters.Add(book_id);
+
+            cmd.ExecuteNonQuery();
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+        }
+
         public List<Author> GetAuthors()
         {
             MySqlConnection conn = DB.Connection();
@@ -273,7 +298,5 @@ namespace LibraryCatalog.Models
         {
             return Author.GetAll();
         }
-
     }
-}
 }

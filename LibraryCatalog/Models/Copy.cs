@@ -215,6 +215,8 @@ namespace LibraryCatalog.Models
                 copyPatron = new Patron(name, patronId);
             }
 
+
+
             conn.Close();
             if (conn != null)
             {
@@ -222,6 +224,43 @@ namespace LibraryCatalog.Models
             }
 
             return copyPatron;
+        }
+
+        public Book GetBook()
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT books.* FROM copies
+                                JOIN copies_books ON (books.id = copies_books.book_id)
+                                JOIN books ON (copies_books.copy_id = copies.id)
+                                WHERE copies.id = @copyId;";
+
+            MySqlParameter copyIdParameter = new MySqlParameter();
+            copyIdParameter.ParameterName = "@copyId";
+            copyIdParameter.Value = Id;
+            cmd.Parameters.Add(copyIdParameter);
+
+            var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            Book existingBook = null;
+
+            while (rdr.Read())
+            {
+                int bookId = rdr.GetInt32(0);
+                string title = rdr.GetString(1);
+                existingBook = new Book(title, bookId);
+            }
+
+
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+
+            return existingBook;
         }
 
         public List<Patron> GetAllPatrons()

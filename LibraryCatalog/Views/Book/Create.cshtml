@@ -1,0 +1,25 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <form action="/add/book" method="post">
+            <div class="form-group">
+                <label for="name">Enter A Title</label>
+                <input type="text" id="name" name="name" />
+            </div>
+            <div class="form-group">
+                <label for="author">Select Author:</label>
+                <select name="author" required>
+                    @foreach(var author in Model)
+                    {
+                        <option value="@author.Id">@author.Name</option>
+                    }
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Add</button>
+            <a href="/" class="btn btn-primary">Return to Home</a>
+        </form>
+    </div>
+</div>

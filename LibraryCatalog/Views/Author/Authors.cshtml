@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>Existing Authors</h3>
+        @{
+            foreach (var author in Model)
+            {
+                <h4><a href="/view/authors/@author.Id">@author.Name</a></h4>
+                <a href="/view/authors/@author.Id/update" class="btn btn-primary">Edit</a>
+                <form class="inline-form-button" method="post" action="/view/authors/@author.Id/delete"><button type="submit" class="btn btn-danger">Delete</button></form>
+                <hr />
+            }
+        }
+    </div>
+</div>

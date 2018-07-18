@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LibraryCatalog.Models;
+using LibraryCatalog.ViewModels;
 
 namespace LibraryCatalog.Controllers
 {
@@ -12,14 +13,16 @@ namespace LibraryCatalog.Controllers
         [HttpGet("/add/book")]
         public ActionResult Create()
         {
-            return View();
+            return View(Author.GetAll());
         }
 
         [HttpPost("/add/book")]
-        public ActionResult CreatePost(string name)
+        public ActionResult CreatePost(string name, int author)
         {
             Book newBook = new Book(name);
+            Author existingAuthor = Author.Find(author);
             newBook.Save();
+            newBook.AddAuthor(existingAuthor);
 
             return RedirectToAction("Books");
         }
@@ -30,21 +33,22 @@ namespace LibraryCatalog.Controllers
             return View(Book.GetAll());
         }
 
-        [HttpGet("/view/book/{id}")]
+        [HttpGet("/view/books/{id}")]
         public ActionResult Details(int id)
         {
             Book existingBook = Book.Find(id);
+
             return View(existingBook);
         }
 
-        [HttpGet("/view/book/{id}/update")]
+        [HttpGet("/view/books/{id}/update")]
         public ActionResult UpdateForm(int id)
         {
             Book existingBook = Book.Find(id);
             return View(existingBook);
         }
 
-        [HttpPost("/view/book/{id}/update")]
+        [HttpPost("/view/books/{id}/update")]
         public ActionResult Update(int id, string name)
         {
             Book existingBook = Book.Find(id);
@@ -53,7 +57,7 @@ namespace LibraryCatalog.Controllers
             return RedirectToAction("Details", id);
         }
 
-        [HttpPost("/view/book/{id}/delete")]
+        [HttpPost("/view/books/{id}/delete")]
         public ActionResult Delete(int id)
         {
             Book existingBook = Book.Find(id);

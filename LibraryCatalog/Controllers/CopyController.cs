@@ -4,25 +4,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LibraryCatalog.Models;
+using LibraryCatalog.ViewModels;
 
 namespace LibraryCatalog.Controllers
 {
     public class CopyController : Controller
     {
         [HttpGet("/add/copy")]
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
             return View();
         }
 
         [HttpPost("/add/copy")]
-        public ActionResult CreatePost(string dueDate)
+        public ActionResult CheckoutCopy(int bookId, int patronId, string dueDate)
         {
             DateTime newDate = Convert.ToDateTime(dueDate);
             Copy newCopy = new Copy(newDate);
-            newCopy.Save();
 
-            return RedirectToAction("Copies");
+            Patron existingPatron = Patron.Find(patronId);
+            Book existingBook = Book.Find(bookId);
+            existingBook.AddCopy(newCopy);
+
+            return RedirectToAction("Details", patronId);
         }
 
         [HttpGet("/view/copies")]
@@ -45,5 +49,14 @@ namespace LibraryCatalog.Controllers
             existingCopy.Delete();
             return RedirectToAction("Copies");
         }
+
+        [HttpGet("/view/copy/{id}/checkout")]
+        public ActionResult Checkout(int id, string dueDate)
+        {
+            Patron existingPatron = Patron.Find(id);
+            Copy newCopy = 
+            return View(existingCopy);
+        }
+
     }
 }

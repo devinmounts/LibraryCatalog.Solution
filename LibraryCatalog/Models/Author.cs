@@ -260,5 +260,4 @@ namespace LibraryCatalog.Models
             }
            
         }
-    }
 }

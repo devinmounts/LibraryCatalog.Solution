@@ -1,0 +1,18 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h3>@Model.Name:</h3>
+        <hr /><br />
+        <h5><strong>Books</strong></h5>
+        @foreach(var book in Model.GetBooks())
+        {
+            <p><a href="~/view/books/@book.Id">@book.Title</a></p>
+        }
+        <a href="/view/author/@Model.Id/update" class="btn btn-primary">Edit</a>
+        <form method="post" class="inline-form-button" action="/view/author/@Model.Id/delete"><button type="submit" class="btn btn-danger">Delete</button></form>
+        <hr />
+    </div>
+</div>
