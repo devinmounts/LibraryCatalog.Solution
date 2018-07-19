@@ -21,5 +21,10 @@
     <Folder Include="Views\Copy\" />
     <Folder Include="Views\Patron\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="wwwroot\css\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\css\site.css" />
+    <Content Remove="wwwroot\css\site.min.css" />
   </ItemGroup>
 </Project>

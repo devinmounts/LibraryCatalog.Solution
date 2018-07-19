@@ -10,11 +10,11 @@ namespace LibraryCatalog.Models
         private bool checkedOut { get; set; }
         public DateTime DueDate { get; set; }
 
-        public Copy(DateTime dueDate, int id = 0)
+        public Copy(int id = 0)
         {
 
             Id = id;
-            DueDate = dueDate;
+            DueDate = DateTime.Now.AddDays(14);
             checkedOut = true;
         }
 
@@ -77,9 +77,8 @@ namespace LibraryCatalog.Models
             while (rdr.Read())
             {
                 int id = rdr.GetInt32(0);
-                DateTime dueDate = rdr.GetDateTime(1);
 
-                Copy newCopy = new Copy(dueDate, id);
+                Copy newCopy = new Copy(id);
                 allCopies.Add(newCopy);
             }
 
@@ -109,15 +108,13 @@ namespace LibraryCatalog.Models
             var rdr = cmd.ExecuteReader() as MySqlDataReader;
 
             int copyId = 0;
-            DateTime dueDate = DateTime.MinValue;
 
             while (rdr.Read())
             {
                 copyId = rdr.GetInt32(0);
-                dueDate = rdr.GetDateTime(1);
             }
 
-            Copy foundCopy = new Copy(dueDate, copyId);
+            Copy foundCopy = new Copy(copyId);
 
             conn.Close();
             if (conn != null)

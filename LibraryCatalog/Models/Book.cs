@@ -17,10 +17,12 @@ namespace LibraryCatalog.Models
             Title = title;
         }
 
+        /*
         public override int GetHashCode()
         {
             return this.Title.GetHashCode();
         }
+        */
 
         public override bool Equals(System.Object otherBook)
         {
@@ -87,8 +89,7 @@ namespace LibraryCatalog.Models
             while (rdr.Read())
             {
                 int copyId = rdr.GetInt32(0);
-                DateTime dueDate = rdr.GetDateTime(1);
-                Copy newCopy = new Copy(dueDate, copyId);
+                Copy newCopy = new Copy(copyId);
                 bookCopies.Add(newCopy);
             }
 

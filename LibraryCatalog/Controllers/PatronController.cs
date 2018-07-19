@@ -51,7 +51,7 @@ namespace LibraryCatalog.Controllers
             Patron existingPatron = Patron.Find(id);
             existingPatron.Edit(name);
 
-            return RedirectToAction("Details", id);
+            return RedirectToAction("Details", new {id = id});
         }
 
         [HttpPost("/view/patrons/{id}/delete")]
@@ -71,10 +71,9 @@ namespace LibraryCatalog.Controllers
         }
 
         [HttpPost("/view/patrons/{id}/checkout")]
-        public ActionResult CheckoutCopy(int bookId, int id, string date)
+        public ActionResult CheckoutCopy(int bookId, int id)
         {
-            DateTime newDate = Convert.ToDateTime(date);
-            Copy newCopy = new Copy(newDate);
+            Copy newCopy = new Copy();
             newCopy.Save();
 
             Patron existingPatron = Patron.Find(id);

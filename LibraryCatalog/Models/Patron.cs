@@ -34,6 +34,7 @@ namespace LibraryCatalog.Models
                 bool nameEquality = (this.Name == newPatron.Name);
 
                 return (idEquality && nameEquality);
+
             }
         }
 
@@ -240,8 +241,8 @@ namespace LibraryCatalog.Models
             while (rdr.Read())
             {
                 int copyId = rdr.GetInt32(0);
-                DateTime dueDate = rdr.GetDateTime(1);
-                Copy newCopy = new Copy(dueDate, copyId);
+
+                Copy newCopy = new Copy(copyId);
                 copies.Add(newCopy);
             }
 

@@ -49,12 +49,20 @@ namespace LibraryCatalog.Controllers
         }
 
         [HttpPost("/view/books/{id}/update")]
-        public ActionResult Update(int id, string name)
+        public ActionResult Update(int id, string title, string addAuthor)
         {
             Book existingBook = Book.Find(id);
-            existingBook.Edit(name);
 
-            return RedirectToAction("Details", id);
+            if(!(addAuthor == ""))
+            {
+                Author newAuthor = new Author(addAuthor);
+                newAuthor.Save();
+                existingBook.AddAuthor(newAuthor);
+            }
+            existingBook.Edit(title);
+
+
+            return RedirectToAction("Details", new {id = id});
         }
 
         [HttpPost("/view/books/{id}/delete")]
