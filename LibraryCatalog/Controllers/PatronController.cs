@@ -81,7 +81,7 @@ namespace LibraryCatalog.Controllers
             Book existingBook = Book.Find(bookId);
             existingBook.AddCopy(newCopy);
 
-            return RedirectToAction("Details", id);
+            return RedirectToAction("Details", new { id = id });
         }
     }
 }

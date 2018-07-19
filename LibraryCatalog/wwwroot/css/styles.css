@@ -1,3 +1,7 @@
-﻿form {
+﻿body{
+    background-image: url("../images/full-bloom.png");
+}
+
+form {
     display: inline-block;
 }
