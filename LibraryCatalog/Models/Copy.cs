@@ -109,7 +109,7 @@ namespace LibraryCatalog.Models
             var rdr = cmd.ExecuteReader() as MySqlDataReader;
 
             int copyId = 0;
-            DateTime dueDate = rdr.GetDateTime(1);
+            DateTime dueDate = DateTime.MinValue;
 
             while (rdr.Read())
             {
@@ -133,12 +133,17 @@ namespace LibraryCatalog.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"DELETE FROM copies WHERE id = @CopyId; DELETE FROM checkouts WHERE copies_id = @CopyId;";
+            cmd.CommandText = @"UPDATE books SET copies = copies +1 WHERE books.id = @BookId; DELETE FROM copies WHERE id = @CopyId; DELETE FROM checkouts WHERE copy_id = @CopyId;";
 
             MySqlParameter copyIdParameter = new MySqlParameter();
             copyIdParameter.ParameterName = "@CopyId";
             copyIdParameter.Value = Id;
             cmd.Parameters.Add(copyIdParameter);
+
+            MySqlParameter bookIdParameter = new MySqlParameter();
+            bookIdParameter.ParameterName = "@BookId";
+            bookIdParameter.Value = GetBook().Id;
+            cmd.Parameters.Add(bookIdParameter);
 
             cmd.ExecuteNonQuery();
             if (conn != null)

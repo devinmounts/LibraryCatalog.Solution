@@ -11,6 +11,7 @@
         {
             <p><a href="~/view/books/@copy.GetBook().Id">@copy.GetBook().Title</a></p>
             <p><strong>Due Date: @copy.DueDate.ToString("M/dd/yyyy")</strong></p>
+            <form action="~/view/copy/@copy.Id/delete" method="post"><button type="submit" class="btn btn-success">Return Book</button></form>
         }
         <a href="/view/patrons/@Model.Id/checkout" class="btn btn-primary">Checkout</a>
         <a href="/view/patrons/@Model.Id/update" class="btn btn-primary">Edit</a>

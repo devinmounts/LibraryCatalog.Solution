@@ -39,8 +39,9 @@ namespace LibraryCatalog.Controllers
         public ActionResult Delete(int id)
         {
             Copy existingCopy = Copy.Find(id);
+            int patronId = existingCopy.GetPatron().Id;
             existingCopy.Delete();
-            return RedirectToAction("Copies");
+            return RedirectToAction("Details", "Patron", new {id = patronId});
         }
     }
 }
