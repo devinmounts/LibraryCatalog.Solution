@@ -5,11 +5,17 @@
 <div class="row">
     <div class="col-sm-12">
         <h3>@Model.Title:</h3>
+        <h6>Copies Available: @Model.GetCopies()</h6>
         <hr /><br />
         <h5><strong>Authors:</strong></h5>
         @foreach(var author in Model.GetAuthors())
         {
             <p><a href="~/view/authors/@author.Id">@author.Name</a></p>
+        }
+        <h5>Patrons who have this book checked out:</h5>
+        @foreach(var copy in Model.GetBookCopies())
+        {
+            <h6><a href="~/view/patrons/@copy.GetPatron().Id">@copy.GetPatron().Name</a></h6>
         }
         <a href="/view/book/@Model.Id/update" class="btn btn-primary">Edit</a>
         <form method="post" class="inline-form-button" action="/view/book/@Model.Id/delete"><button type="submit" class="btn btn-danger">Delete</button></form>

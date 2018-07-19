@@ -10,6 +10,7 @@
         @foreach(var copy in Model.GetCopies())
         {
             <p><a href="~/view/books/@copy.GetBook().Id">@copy.GetBook().Title</a></p>
+            <p><strong>Due Date: @copy.DueDate.ToString("M/dd/yyyy")</strong></p>
         }
         <a href="/view/patrons/@Model.Id/checkout" class="btn btn-primary">Checkout</a>
         <a href="/view/patrons/@Model.Id/update" class="btn btn-primary">Edit</a>

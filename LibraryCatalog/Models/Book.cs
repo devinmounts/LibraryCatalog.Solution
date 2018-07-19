@@ -15,7 +15,6 @@ namespace LibraryCatalog.Models
 
             Id = id;
             Title = title;
-            copies--;
         }
 
         public override int GetHashCode()
@@ -41,7 +40,65 @@ namespace LibraryCatalog.Models
 
         public int GetCopies()
         {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT copies FROM books WHERE books.id = @BookId;";
+
+            MySqlParameter bookIdParameter = new MySqlParameter();
+            bookIdParameter.ParameterName = "@BookId";
+            bookIdParameter.Value = Id;
+            cmd.Parameters.Add(bookIdParameter);
+
+            MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            while (rdr.Read())
+            {
+                copies = rdr.GetInt32(0);
+            }
+            conn.Close();
+
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
             return copies;
+        }
+
+        public List<Copy> GetBookCopies()
+        {
+            MySqlConnection conn = DB.Connection();
+            conn.Open();
+            var cmd = conn.CreateCommand() as MySqlCommand;
+            cmd.CommandText = @"SELECT copies.* FROM books
+                                JOIN copies_books ON (books.id = copies_books.book_id)
+                                JOIN copies ON (copies_books.copy_id = copies.id)
+                                WHERE books.id = @BookId;";
+
+            MySqlParameter bookIdParameter = new MySqlParameter();
+            bookIdParameter.ParameterName = "@BookId";
+            bookIdParameter.Value = Id;
+            cmd.Parameters.Add(bookIdParameter);
+
+            var rdr = cmd.ExecuteReader() as MySqlDataReader;
+
+            List<Copy> bookCopies = new List<Copy> { };
+
+            while (rdr.Read())
+            {
+                int copyId = rdr.GetInt32(0);
+                DateTime dueDate = rdr.GetDateTime(1);
+                Copy newCopy = new Copy(dueDate, copyId);
+                bookCopies.Add(newCopy);
+            }
+
+            conn.Close();
+            if (conn != null)
+            {
+                conn.Dispose();
+            }
+
+            return bookCopies;
         }
 
         public void ReturnCopy()
@@ -238,7 +295,7 @@ namespace LibraryCatalog.Models
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"INSERT INTO copies_books (copy_id, book_id) VALUES (@CopyId, @BookId);";
+            cmd.CommandText = @"INSERT INTO copies_books (copy_id, book_id) VALUES (@CopyId, @BookId); UPDATE books SET copies = copies -1 WHERE books.id = @BookId;";
 
             MySqlParameter copy_id = new MySqlParameter();
             copy_id.ParameterName = "@CopyId";
@@ -250,12 +307,15 @@ namespace LibraryCatalog.Models
             book_id.Value = Id;
             cmd.Parameters.Add(book_id);
 
+            this.copies--;
+
             cmd.ExecuteNonQuery();
             conn.Close();
             if (conn != null)
             {
                 conn.Dispose();
             }
+
         }
 
         public List<Author> GetAuthors()
@@ -294,6 +354,7 @@ namespace LibraryCatalog.Models
             return authors;
         }
 
+ 
         public List<Author> GetAllAuthors()
         {
             return Author.GetAll();

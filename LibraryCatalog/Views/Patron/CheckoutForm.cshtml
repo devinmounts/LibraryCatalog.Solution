@@ -11,6 +11,10 @@
                 <select name="bookId" required>
                     @foreach(var book in Model.GetAll())
                     {
+                        if(book.GetCopies() < 1)
+                        {
+                            continue;
+                        }
                         <option value="@book.Id">@book.Title</option>
                     }
                 </select>

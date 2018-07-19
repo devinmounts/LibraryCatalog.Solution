@@ -9,6 +9,7 @@
             foreach (var book in Model)
             {
                 <h4><a href="/view/books/@book.Id">@book.Title</a></h4>
+                <h6>Copies Available: @book.GetCopies()</h6>
                 <a href="/view/books/@book.Id/update" class="btn btn-primary">Edit</a>
                 <form class="inline-form-button" method="post" action="/view/books/@book.Id/delete"><button type="submit" class="btn btn-danger">Delete</button></form>
                 <hr />
